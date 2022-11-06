@@ -28,7 +28,6 @@ public class HomeFragment extends Fragment {
 
     ItemViewModel viewModel;
     EditText text_1;
-    AppCompatButton btn_1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,13 +36,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         text_1 = view.findViewById(R.id.text_1);
-        btn_1 = view.findViewById(R.id.btn_1);
-        btn_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.setData(text_1.getText().toString());
-            }
-        });
+
+        Bundle bundle = getArguments();
+
+        if(bundle!=null){
+            text_1.setText(bundle.getString("text"));
+        }
 
         return view;
     }

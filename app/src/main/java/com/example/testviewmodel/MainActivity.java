@@ -3,10 +3,12 @@ package com.example.testviewmodel;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -24,39 +26,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Calendar;
 
-    EditText text_1;
-    AppCompatButton btn_1;
-    ItemViewModel viewModel;
+public class MainActivity extends AppCompatActivity{
+
+    AppCompatButton button;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        button = findViewById(R.id.btn_1);
+        editText =findViewById(R.id.text_1);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_1, new BlankFragment());
-        transaction.replace(R.id.frame_2, new HomeFragment());
-        transaction.commit();
 
-        text_1 = findViewById(R.id.text_1);
-        btn_1 = findViewById(R.id.btn_1);
-
-        btn_1.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                viewModel.setData(text_1.getText().toString());
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                HomeFragment homeFragment = new HomeFragment();
+
+                String text = editText.getText().toString();
+                Bundle bundle = new Bundle();
+                bundle.putString("text",text);
+                homeFragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.frame_layout1, homeFragment).commit();
             }
         });
 
-        viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-        viewModel.getSelectedItem().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                text_1.setText(s);
-            }
-        });
+
+        FragmentManager fragmentManager1 = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+        BlankFragment blankFragment = new BlankFragment();
+        fragmentTransaction1.replace(R.id.frame_layout2, blankFragment).commit();
+
 
 
     }
