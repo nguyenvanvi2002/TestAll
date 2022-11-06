@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements DataInterface{
 
     AppCompatButton button;
     EditText editText;
@@ -40,23 +40,10 @@ public class MainActivity extends AppCompatActivity{
         button = findViewById(R.id.btn_1);
         editText =findViewById(R.id.text_1);
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                HomeFragment homeFragment = new HomeFragment();
-
-                String text = editText.getText().toString();
-                Bundle bundle = new Bundle();
-                bundle.putString("text",text);
-                homeFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.frame_layout1, homeFragment).commit();
-            }
-        });
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        HomeFragment homeFragment = new HomeFragment();
+        fragmentTransaction.replace(R.id.frame_layout1, homeFragment).commit();
 
         FragmentManager fragmentManager1 = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
@@ -65,5 +52,12 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+
+    }
+
+    @Override
+    public void getMessage(String messsage) {
+        BlankFragment blankFragment = (BlankFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout2);
+        blankFragment.updateFragment(messsage);
     }
 }

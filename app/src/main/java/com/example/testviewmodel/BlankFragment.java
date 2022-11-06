@@ -29,20 +29,10 @@ public class BlankFragment extends Fragment{
         button = view.findViewById(R.id.btn_1);
         editText = view.findViewById(R.id.text_1);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HomeFragment homeFragment = new HomeFragment();
-
-                String text = editText.getText().toString();
-                Bundle bundle = new Bundle();
-                bundle.putString("text",text);
-                homeFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().replace(R.id.frame_layout1, homeFragment).commit();
-            }
-        });
-
-
         return view;
+    }
+
+    public void updateFragment(String str) {
+        editText.setText(str);
     }
 }
