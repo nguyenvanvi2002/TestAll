@@ -33,7 +33,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:text="Act to Frag2" />
+            android:text="send" />
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/frame_layout1"

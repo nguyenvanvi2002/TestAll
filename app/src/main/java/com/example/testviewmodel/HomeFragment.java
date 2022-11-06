@@ -18,18 +18,8 @@ import android.widget.EditText;
 public class HomeFragment extends Fragment{
 
     EditText editText;
-    DataInterface dataInterface;
     AppCompatButton button;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof DataInterface) {
-            dataInterface = (DataInterface) context;
-        } else {
-            throw new RuntimeException(context.toString() + "Can phai implement");
-        }
-    }
+    ItemViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,11 +33,21 @@ public class HomeFragment extends Fragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataInterface.getMessage(editText.getText().toString());
+                viewModel.setData(editText.getText().toString());
             }
         });
-
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
+        viewModel.getSelectedItem().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                editText.setText(s);
+            }
+        });
     }
 }

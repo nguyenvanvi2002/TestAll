@@ -28,8 +28,9 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements DataInterface{
+public class MainActivity extends AppCompatActivity{
 
+    private ItemViewModel viewModel;
     AppCompatButton button;
     EditText editText;
 
@@ -50,14 +51,18 @@ public class MainActivity extends AppCompatActivity implements DataInterface{
         BlankFragment blankFragment = new BlankFragment();
         fragmentTransaction1.replace(R.id.frame_layout2, blankFragment).commit();
 
-
-
-
-    }
-
-    @Override
-    public void getMessage(String messsage) {
-        BlankFragment blankFragment = (BlankFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout2);
-        blankFragment.updateFragment(messsage);
+        viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.setData(editText.getText().toString());
+            }
+        });
+        viewModel.getSelectedItem().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                editText.setText(s);
+            }
+        });
     }
 }
